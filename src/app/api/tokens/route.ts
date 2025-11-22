@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getPrisma, ensureSchema } from '@/lib/db';
+import {prisma} from '@/lib/db';
 
 export async function GET() {
   try {
@@ -7,8 +7,6 @@ export async function GET() {
     if (!envConfigured) {
       return NextResponse.json({ tokens: [], envConfigured }, { status: 200 });
     }
-    await ensureSchema();
-    const prisma = getPrisma();
     if (!prisma) return NextResponse.json({ tokens: [], envConfigured }, { status: 200 });
     // let c = 0;
     // try {
@@ -46,8 +44,6 @@ export async function POST(req: Request) {
     if (!(process.env.PRISMA_DATABASE_URL || process.env.DATABASE_URL)) {
       return NextResponse.json({ ok: true, skipped: true }, { status: 201 });
     }
-    await ensureSchema();
-    const prisma = getPrisma();
     if (!prisma) return NextResponse.json({ ok: true, skipped: true }, { status: 201 });
     const body = await req.json();
     const address: string = (body?.address || '').trim();
