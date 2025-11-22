@@ -30,7 +30,7 @@ export async function GET() {
     let addresses: string[] = [];
     try {
       const rows = await prisma.token.findMany({ select: { address: true }, orderBy: { id: 'desc' } });
-      addresses = rows.map(r => r.address);
+      addresses = rows.map((r: { address: string }) => r.address);
     } catch {
       return NextResponse.json({ data: [], envConfigured }, { status: 200 });
     }
@@ -39,9 +39,9 @@ export async function GET() {
     }
     const data = await fetchMultipleTickers(addresses);
     return NextResponse.json({ data, envConfigured }, { status: 200 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('GET /api/market/tickers error:', e);
     const envConfigured = !!(process.env.PRISMA_DATABASE_URL || process.env.DATABASE_URL);
-    return NextResponse.json({ data: [], envConfigured, error: '获取行情失败', detail: e?.message }, { status: 200 });
+    return NextResponse.json({ data: [], envConfigured, error: '获取行情失败', detail: (e as Error)?.message }, { status: 200 });
   }
 }

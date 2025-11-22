@@ -10,8 +10,8 @@ export async function POST(req: Request) {
     }
     const data = await fetchTickerPrice(address);
     return NextResponse.json({ data }, { status: 200 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('POST /api/market/ticker error:', e);
-    return NextResponse.json({ error: '获取详情失败', detail: e?.message }, { status: 500 });
+    return NextResponse.json({ error: '获取详情失败', detail: (e as Error)?.message }, { status: 500 });
   }
 }
