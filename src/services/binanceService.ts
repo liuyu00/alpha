@@ -1,20 +1,21 @@
 import { DexTokenData, StabilityAnalysis } from '@/types';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+// import { HttpsProxyAgent } from 'https-proxy-agent';
 import axios from 'axios';
 import * as tunnel from 'tunnel';
 
-const agent = tunnel.httpsOverHttp({
-  proxy: { host: '127.0.0.1', port: 7890 },
-});
+// const agent = tunnel.httpsOverHttp({
+//   proxy: { host: '127.0.0.1', port: 7890 },
+// });
 const BASE_URL = 'https://api.dexscreener.com/latest/dex/tokens';
 // const agent = new HttpsProxyAgent('http://127.0.0.1:7890');
 // const agent = new HttpsProxyAgent('http://127.0.0.1:7890');
 
 export const fetchTickerPrice = async (address: string): Promise<DexTokenData> => {
   try {
-    const response = await axios.get(`${BASE_URL}/${address}`, {
-       httpsAgent: agent,
-    });
+    // const response = await axios.get(`${BASE_URL}/${address}`, {
+    //    httpsAgent: agent,
+    // });
+    const response = await axios.get(`${BASE_URL}/${address}`);
     const data = response.data;
     if (!data.pairs || data.pairs.length === 0) throw new Error('No pairs found for this contract address.');
 
@@ -36,10 +37,10 @@ export const fetchMultipleTickers = async (addresses: string[]): Promise<DexToke
     const uniqueAddrs = [...new Set(addresses)];
     const url = `${BASE_URL}/${uniqueAddrs.join(',')}`;
     console.log(uniqueAddrs)
-    const response = await axios.get(url, {
-       httpsAgent: agent,
-    });
-
+    // const response = await axios.get(url, {
+    //    httpsAgent: agent,
+    // });
+    const response = await axios.get(url);
     const data = response.data;
     if (!data.pairs) return [];
 
