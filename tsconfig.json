@@ -39,7 +39,6 @@
   ],
   "exclude": [
     "node_modules",
-    "**/.next/**",
-    "alpha-链上狙击助手 (1)/**"
+    "**/.next/**"
   ]
 }
