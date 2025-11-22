@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id         Int      @id @default(autoincrement())
+  address    String   @unique
+  chain_id   String?
+  created_at DateTime @default(now())
+
+  @@map("tokens")
+}
+
+model Test {
+  id         Int      @id @default(autoincrement())
+  address    String   @unique
+  chain_id   String?
+  created_at DateTime @default(now())
+
+  @@map("test")
+}
