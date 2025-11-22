@@ -32,6 +32,7 @@ export async function GET() {
     } catch {
       return NextResponse.json({ tokens: [], envConfigured }, { status: 200 });
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     console.error('GET /api/tokens error:', e);
     const envConfigured = !!(process.env.PRISMA_DATABASE_URL || process.env.DATABASE_URL);
@@ -59,8 +60,8 @@ export async function POST(req: Request) {
     } catch {
       return NextResponse.json({ ok: true, skipped: true }, { status: 201 });
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('POST /api/tokens error:', e);
-    return NextResponse.json({ ok: true, skipped: true, error: '数据库写入失败', detail: e?.message }, { status: 201 });
+    return NextResponse.json({ ok: true, skipped: true, error: '数据库写入失败', detail: (e as Error)?.message }, { status: 201 });
   }
 }
